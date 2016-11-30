@@ -12,17 +12,26 @@ namespace WebJobScript
             // Configure the full path to the functions directory
             string functionsPath = Path.Combine(Environment.CurrentDirectory, "Functions");
 
+            ScriptSettingsManager settings =  ScriptSettingsManager.Instance;
+            {
+            };
+
+
             // When deployed as a WebJob, the WebJobs infrastructure handles
             // watching for script changes and restarting the host, so we
             // need to disable ScriptHost's inbuilt file watching.
             ScriptHostConfiguration config = new ScriptHostConfiguration()
             {
                 RootScriptPath = functionsPath,
-                FileWatchingEnabled = true
+                FileWatchingEnabled = false,
+                RootLogPath = functionsPath
             };
 
             // start the ScriptHost
-            ScriptHost scriptHost = ScriptHost.Create(config);
+            ScriptHost scriptHost = ScriptHost.Create(settings, config);
+
+            
+
             scriptHost.RunAndBlock();
         }
     }
